@@ -10,8 +10,8 @@ use Pecee\Http\Request;
 use Pecee\SimpleRouter\SimpleRouter;
 include_once('./vendor/autoload.php');
 
-define("SUB_FOLDER", "/kyabanau-app-backend"); // make it empty if your root dir is localhost
-define("API_FOLDER", "/api"); // make it empty if your root dir is localhost
+define("SUB_FOLDER", ""); // make it empty if your root dir is localhost
+define("API_FOLDER", ""); // make it empty if your root dir is localhost
 
 function view($page, $arr = array())
 {

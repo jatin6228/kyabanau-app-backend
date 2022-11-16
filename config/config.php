@@ -11,7 +11,7 @@ require './vendor/autoload.php';
 
 function db()
 {
-$mysqli = new mysqli ('localhost', 'root', '', 'kya_banau');
+$mysqli = new mysqli ('localhost', 'root', 'P@55w0rD!ndia', 'kb');
 $db = new MysqliDb ($mysqli);
 $db->autoReconnect = true;
 return $db;
