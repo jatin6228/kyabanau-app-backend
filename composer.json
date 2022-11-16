@@ -6,6 +6,7 @@
         "ramsey/uuid": "^4.2",
         "thingengineer/mysqli-database-class": "dev-master",
         "phpmailer/phpmailer": "^6.6",
-        "pecee/simple-router": "4.3.7.2"
+        "pecee/simple-router": "4.3.7.2",
+        "nahid/jsonq": "^6.0"
     }
 }

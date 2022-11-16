@@ -2,6 +2,7 @@
 
 include('./config/config.php');
 use Ramsey\Uuid\Uuid;
+use Nahid\JsonQ\Jsonq;
 
 function insertUser($data)
 {
@@ -71,6 +72,8 @@ function getSingleUserByColVal($col, $val)
         return ["count" => 1, "msg" => "No User Found.", "data" => $users, "uuid" => $users['uuid']];
     }
 }
+
+
 
 // Create
 function createNewUser()
@@ -153,9 +156,58 @@ function createNewUser()
     }
 }
 
+
+
+// get all 
+function getAllDishesByColVal($col, $val)
+{
+    //$uuid 
+    $db = db();
+    $db->where($col, $val);
+    $dishes = $db->get("dishes");
+    if($dishes == null)
+    {
+        return ["count" => 0, "msg" => "No Found in Database."];
+    }
+    else
+    {
+        return ["count" => $db->count, "msg" => "Found some data", "data" => $dishes];
+    }
+}
+
+// getDishByCategory
+function getDishesByCategory($category)
+{
+    header('Content-Type: application/json; charset=utf-8');
+    $cat = $category;
+    $dishes = getAllDishesByColVal("category", $cat);
+    $json = new Jsonq();
+    if($dishes["count"] > 0)
+    {
+        $res =  [
+            "status" => "success",
+            "count" => $dishes["count"],
+            "data" => $dishes["data"]
+        ];
+        return json_encode($res);
+    }
+    else
+    {
+        $res = [
+            "status" => "success",
+            "count" => 0,
+            "data" => []
+        ];
+        return $json->collect($res);
+
+    }
+   
+    die();
+}
+
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json; charset=utf-8');
-echo createNewUser();
+echo getDishesByCategory($category);
 
 
 ?>

@@ -2,6 +2,7 @@
 
 include('./config/config.php');
 use Ramsey\Uuid\Uuid;
+use Nahid\JsonQ\Jsonq;
 
 function insertUser($data)
 {
@@ -71,6 +72,8 @@ function getSingleUserByColVal($col, $val)
         return ["count" => 1, "msg" => "No User Found.", "data" => $users, "uuid" => $users['uuid']];
     }
 }
+
+
 
 // Create
 function createNewUser()
@@ -153,9 +156,77 @@ function createNewUser()
     }
 }
 
+// get all 
+function searchQuery($val)
+{
+    //$uuid 
+    $db = db();
+    $db->where("tags", '%'.$val.'%', 'like');
+    $db->orWhere("name", '%'.$val.'%', 'like'); 
+    $db->orWhere("slug", '%'.$val.'%', 'like');
+    $db->orWhere("category", '%'.$val.'%', 'like');
+    $db->orWhere("cuisines", '%'.$val.'%', 'like');
+    $db->orWhere("taste_type", '%'.$val.'%', 'like');
+
+    $dishes = $db->get("dishes");
+
+    if($dishes == null)
+    {
+        return ["count" => 0, "msg" => "No Found in Database."];
+    }
+    else
+    {
+        return ["count" => $db->count, "msg" => "Found some data", "data" => $dishes];
+    }
+}
+
+// getDishByCategory
+function search()
+{
+    if(isset($_GET["q"]))
+    {
+        $q = $_GET["q"];
+    }
+    else
+    {
+        $q = false;
+    }
+
+    if($q != false)
+    {
+        $ds = searchQuery($q);
+        if( $ds["count"] > 0){
+            $res =  [
+                "status" => "success",
+                "count" => $ds["count"],
+                "data" => $ds["data"]
+            ];
+            return json_encode($res);
+        }
+        else
+        {
+            $res =  [
+                "status" => "success",
+                "count" => 0,
+                "data" => []
+            ];
+            return json_encode($res); 
+        }
+    }
+    else
+    {
+        $res =  [
+            "status" => "false",
+            "message" => "Please search by query param: q"
+        ];
+        return json_encode($res);
+    }
+
+}
+
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json; charset=utf-8');
-echo createNewUser();
+echo search();
 
 
 ?>

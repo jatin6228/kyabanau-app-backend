@@ -10,7 +10,7 @@ use Pecee\Http\Request;
 use Pecee\SimpleRouter\SimpleRouter;
 include_once('./vendor/autoload.php');
 
-define("SUB_FOLDER", "/kyabanau"); // make it empty if your root dir is localhost
+define("SUB_FOLDER", "/kyabanau-app-backend"); // make it empty if your root dir is localhost
 define("API_FOLDER", "/api"); // make it empty if your root dir is localhost
 
 function view($page, $arr = array())
@@ -36,6 +36,14 @@ SimpleRouter::get(SUB_FOLDER.'/user/{id}', function ($userId) {
 
 SimpleRouter::post(SUB_FOLDER.'/auth/register', function () {
     view('auth/register');
+});
+
+SimpleRouter::get(SUB_FOLDER.'/dishes/get-by-category/{category}', function ($category) {
+    view('dishes/get-by-category', ['category' => $category]);
+});
+
+SimpleRouter::get(SUB_FOLDER.'/dishes/search', function () {
+    view('dishes/search');
 });
 
 
